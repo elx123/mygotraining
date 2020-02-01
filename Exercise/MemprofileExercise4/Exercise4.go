@@ -1,4 +1,4 @@
-package Exercise4
+package MemprofileExercise4
 
 import (
 	"math/rand"

@@ -24,8 +24,12 @@ func main(){
 	var spinterface speaker
 	en := english{}
 	ch := chinese{}
-	spinterface = &en
-	spinterface.speak()
+	spinterface = en
+	sayHello(spinterface)
 	spinterface = ch
-	spinterface.speak()
+	sayHello(spinterface)
+}
+
+func sayHello(s speaker){
+	s.speak()
 }

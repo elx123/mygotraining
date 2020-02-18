@@ -1,0 +1,16 @@
+* 简介
+记录下近期学习计划
+** <2020-02-19 Wed>
+https://github.com/ardanlabs/gotraining
+
+Docker for the Absolute Beginner - Hands-On
+https://kodekloud.com/courses/docker-for-the-absolute-beginner-hands-on/lectures/4554680
+https://www.youtube.com/watch?v=zJ6WbK9zFpI
+https://www.kodekloud.com/p/docker-labs
+
+
+Kubernetes for Absolute Beginners - Hands-on
+Kubernetes Course from a DevOps guru (Kubernetes + Docker)
+Kubernetes Fundamentals
+Kubernetes in Action
+MongoDB - The Complete Developer’s Guide

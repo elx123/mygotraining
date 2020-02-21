@@ -60,11 +60,7 @@ func main(){
 func Woker(cn net.Conn,wg *sync.WaitGroup){
 	for {
 		select {
-			case sendbuf ,ok:= <-sendmessage:
-				if !ok{
-					log.Print("fail")
-					continue
-				}
+			case sendbuf  := <-sendmessage:
 				{
 					log.Print("begin to send ",sendbuf)
 					cn.Write(sendbuf)
@@ -80,13 +76,14 @@ func Woker(cn net.Conn,wg *sync.WaitGroup){
 
 func terminalRead() {
 	buf := make([]byte,1)
-	result := make([]byte,0,10)
+	result := make([]byte,0,100)
 	for {
 		os.Stdin.Read(buf)
 		if buf[0] == '\n' {
 			result = append(result,buf[0])
 			log.Print(result)
 			sendmessage <- result
+			result = result[:0]
 		}
 		result = append(result,buf[0])
 	}

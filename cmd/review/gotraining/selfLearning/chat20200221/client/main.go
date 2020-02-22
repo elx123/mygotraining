@@ -82,7 +82,7 @@ func Woker(cn net.Conn,wg *sync.WaitGroup){
 
 func terminalRead() {
 	buf := make([]byte,1)
-	result := make([]byte,0,100)
+	result := make([]byte,0,100)  //fix me 锁定buf大小
 	for {
 		_,err := io.ReadFull(os.Stdin,buf)
 		if err != nil{

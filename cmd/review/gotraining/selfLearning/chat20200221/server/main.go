@@ -1,22 +1,23 @@
 package main
 
 import (
-	"bufio"
 	"io"
 	"log"
 	"net"
 	"os"
 )
 
-var players []net.Conn
-var enterchannel chan string
+var players map[net.Conn]interface{}
+var enterchannel chan net.Conn
 var messagechannel chan []byte
-var leavechannel chan string
+var leavechannel chan net.Conn
 
 func init() {
-	players = make([]net.Conn,0,100)
+	players = make(map[net.Conn]interface{})
 
-	enterchannel = make(chan string,100)
+	enterchannel = make(chan net.Conn,100)
+	messagechannel = make(chan []byte)
+	leavechannel = make(chan net.Conn,100)
 	// Change the output device from the default
 	// stderr to stdout.
 	log.SetOutput(os.Stdout)
@@ -56,54 +57,56 @@ func main(){
 			conn.Close()
 			continue
 		}
-		enterchannel <- conn.RemoteAddr().String()
-		players = append(players,conn)
-		log.Print(conn.RemoteAddr().String()+" entered")
+		enterchannel <- conn
 		go handle(conn)
 	}
 }
 
 func handle(cn net.Conn){
 	defer cn.Close()
-	var sendbuf bufio.ReadWriter
-	buf := make([]byte,0,1)
+	receivebuf := make([]byte,0,100)
+	buf := make([]byte,1)
 	for {
-		_,err := cn.Read(buf)
+		_,err := io.ReadFull(cn,buf)
 		if err != nil {
 			log.Println(err)
 			break
 		}
-		log.Print(buf)
 		if buf[0] == '\n'{
-			var buf []byte
-			sendbuf.Write(buf)
-
-			messagechannel <- buf
+			receivebuf = append(receivebuf,buf[0])
+			messagechannel <- receivebuf
+			receivebuf = receivebuf[:0]
+			continue
 		}
-		sendbuf.Write(buf)
+		receivebuf = append(receivebuf,buf[0])
 	}
-	leavechannel <- cn.RemoteAddr().String()
+	leavechannel <- cn
 }
 
 func handleEnterUser() {
 	for {
 		select {
 		case user := <-enterchannel:
+			log.Print(user.RemoteAddr().String()+" entered")
+			log.Print("player num ",len(players))
 			for i := range players {
-				io.WriteString(players[i], user)
+				io.WriteString(i, user.RemoteAddr().String()+" entered\n")
 			}
+			players[user] = 1
 		case message := <-messagechannel:
+			log.Print("player num ",len(players))
 			{
 				for i := range players {
-					players[i].Write(message)
+					i.Write(message)
 				}
 			}
 		case user := <-leavechannel:
-			{
+				log.Print(user.RemoteAddr().String()+" leave")
+				delete(players,user)
 				for i := range players {
-					io.WriteString(players[i], user)
+					io.WriteString(i, user.RemoteAddr().String()+" leave\n")
 				}
-			}
+
 		}
 	}
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -58,16 +58,22 @@ func main(){
 }
 
 func Woker(cn net.Conn,wg *sync.WaitGroup){
+	defer cn.Close()
 	for {
 		select {
 			case sendbuf  := <-sendmessage:
 				{
-					log.Print("begin to send ",sendbuf)
-					cn.Write(sendbuf)
+					log.Println("begin to send ",sendbuf)
+					n,err :=cn.Write(sendbuf)
+					if err!= nil{
+						fmt.Print(err)
+						break
+					}
+					log.Print(n)
 				}
 			case receivebuf := <-receiveMessage:
 				{
-					fmt.Print(receivebuf)
+					log.Print(string(receivebuf))
 				}
 		}
 	}
@@ -78,12 +84,16 @@ func terminalRead() {
 	buf := make([]byte,1)
 	result := make([]byte,0,100)
 	for {
-		os.Stdin.Read(buf)
+		_,err := io.ReadFull(os.Stdin,buf)
+		if err != nil{
+			break
+		}
 		if buf[0] == '\n' {
 			result = append(result,buf[0])
-			log.Print(result)
+			log.Println(result)
 			sendmessage <- result
 			result = result[:0]
+			continue
 		}
 		result = append(result,buf[0])
 	}
@@ -91,19 +101,20 @@ func terminalRead() {
 
 func ReadSocket(cn net.Conn){
 	buf := make([]byte,1)
-	var socketBuf bytes.Buffer
+	socketBuf := make([]byte,0,100)
 	for {
-		_,err := cn.Read(buf)
+		_,err := io.ReadFull(cn,buf)
 		if err != nil {
 			log.Println(err)
 			break
 		}
 		if buf[0] == '\n'{
-			socketBuf.Write(buf)
-			receiveMessage <- socketBuf.Bytes()
-			socketBuf.Reset()
+			socketBuf = append(socketBuf,buf[0])
+			receiveMessage <- socketBuf
+			socketBuf = socketBuf[:0]
+			continue
 		}
-		socketBuf.Write(buf)
+		socketBuf = append(socketBuf,buf[0])
 	}
 	cn.Close()
 }

@@ -106,3 +106,4 @@ func(l *List)Remove(data string)(*node,error){
 		n = n.prev
 	}
 }
+

@@ -1,4 +1,5 @@
 package main
+//https://www.youtube.com/watch?v=sYcOK51hl-A
 
 type Node struct{
 	next *Node

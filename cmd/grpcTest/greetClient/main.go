@@ -19,7 +19,12 @@ func main() {
 	defer cc.Close()
 
 	c := greetpb.NewGreetServiceClient(cc)
+	GreetInvok(c)
+}
 
+//??
+func GreetInvok(c greetpb.GreetServiceClient) {
+	log.Println("Starting to do a Unary Rpc...")
 	req := greetpb.GreetRequest{
 		Greeting: &greetpb.Greeting{
 			FirstName: "alx",

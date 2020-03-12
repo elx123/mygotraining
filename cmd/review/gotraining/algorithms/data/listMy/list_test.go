@@ -5,7 +5,8 @@ import (
 	"testing"
 )
 
-func TestListAdd(t *testing.T){
+func TestListAdd(t *testing.T) {
+	t.Helper()
 	t.Log("we will test our list package")
 	{
 		t.Log("we will test the add function")
@@ -15,12 +16,12 @@ func TestListAdd(t *testing.T){
 			n := ls.Add("test2")
 			t.Log("we get the result")
 			//t.Logf("the list first address %p,the list node address %p",ls.)
-			t.Logf("%v %p",ls,n)
+			t.Logf("%v %p", ls, n)
 		}
 	}
 }
 
-func TestListAddFront(t *testing.T){
+func TestListAddFront(t *testing.T) {
 	t.Log("we will test our list package")
 	{
 		t.Log("we will test the AddFront function")
@@ -30,12 +31,12 @@ func TestListAddFront(t *testing.T){
 			n := ls.AddFront("test2")
 			t.Log("we get the result")
 			//t.Logf("the list first address %p,the list node address %p",ls.)
-			t.Logf("%v %p",ls,n)
+			t.Logf("%v %p", ls, n)
 		}
 	}
 }
 
-func TestListFind(t *testing.T){
+func TestListFind(t *testing.T) {
 	t.Log("we will test our list package")
 	{
 		t.Log("we will test the Find function")
@@ -43,13 +44,13 @@ func TestListFind(t *testing.T){
 			ls := listMy.List{}
 			n := ls.AddFront("test1")
 			ls.AddFront("test2")
-			matchn,err := ls.Find("test1")
-			if err != nil{
+			matchn, err := ls.Find("test1")
+			if err != nil {
 				t.Fatal(err)
 			}
 			t.Log("we get the result")
 			//t.Logf("the list first address %p,the list node address %p",ls.)
-			t.Logf("origin value %v,origin address %p,matched value %v,matched address %p",n,n,matchn,matchn)
+			t.Logf("origin value %v,origin address %p,matched value %v,matched address %p", n, n, matchn, matchn)
 		}
 	}
 }
@@ -62,18 +63,18 @@ func TestListFindResver(t *testing.T) {
 			ls := listMy.List{}
 			n := ls.AddFront("test1")
 			ls.AddFront("test2")
-			matchn,err := ls.FindResver("test1")
-			if err != nil{
+			matchn, err := ls.FindResver("test1")
+			if err != nil {
 				t.Fatal(err)
 			}
 			t.Log("we get the result")
 			//t.Logf("the list first address %p,the list node address %p",ls.)
-			t.Logf("origin value %v,origin address %p,matched value %v,matched address %p",n,n,matchn,matchn)
+			t.Logf("origin value %v,origin address %p,matched value %v,matched address %p", n, n, matchn, matchn)
 		}
 	}
 }
 
-func TestRemove(t *testing.T){
+func TestRemove(t *testing.T) {
 	t.Log("we will test our list package")
 	{
 		t.Log("we will test the Remove function")
@@ -81,11 +82,11 @@ func TestRemove(t *testing.T){
 			ls := listMy.List{}
 			ls.AddFront("test1")
 			ls.AddFront("test2")
-			_,err := ls.Remove("test1")
-			if err != nil{
+			_, err := ls.Remove("test1")
+			if err != nil {
 				t.Fatal(err)
 			}
-			_ ,err = ls.Find("test1")
+			_, err = ls.Find("test1")
 			if err != nil {
 				t.Log("remove success")
 				return
@@ -94,6 +95,3 @@ func TestRemove(t *testing.T){
 		}
 	}
 }
-
-
-

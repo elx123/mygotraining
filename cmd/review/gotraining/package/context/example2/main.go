@@ -22,6 +22,8 @@ func main() {
 
 	fmt.Println(ctx2.Value(test12345).(string))
 
+	fmt.Println(ctx2.Value(test1234).(string))
+
 	var wg sync.WaitGroup
 
 	wg.Add(1)

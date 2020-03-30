@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"go.etcd.io/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3"
 )
 
 // etcd client put/get demo

@@ -29,15 +29,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// revoking lease expires the key attached to its lease ID
-	_, err = cli.Revoke(context.TODO(), resp.ID)
-	if err != nil {
-		log.Fatal(err)
+	// the key 'foo' will be kept forever
+	ch, kaerr := cli.KeepAlive(context.TODO(), resp.ID)
+	if kaerr != nil {
+		log.Fatal(kaerr)
 	}
 
-	gresp, err := cli.Get(context.TODO(), "foo")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("number of keys:", len(gresp.Kvs))
+	ka := <-ch
+	fmt.Println("ttl:", ka.TTL)
 }

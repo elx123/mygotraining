@@ -31,7 +31,7 @@ func main() {
 
 	cli.KV = namespace.NewKV(cli.KV, "test")
 
-	_, err = cli.Put(context.TODO(), "foo", "bar", clientv3.WithLease(resp.ID))
+	_, err = cli.Put(context.TODO(), "foo", "bar")
 	if err != nil {
 		log.Fatal(err)
 	}

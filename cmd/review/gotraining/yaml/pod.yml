@@ -6,5 +6,5 @@ metadata:
     app: myapp
 spec:
   containers:
-    - name: ghost
-      image: ghost # image come from docker hub
+    - name: nginx-container
+      image: nginx # image come from docker hub

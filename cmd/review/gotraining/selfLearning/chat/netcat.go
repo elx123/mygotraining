@@ -9,7 +9,7 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"codec"
+	"mygotraining\cmd\review\gotraining\selfLearning\codec"
 	"encoding/binary"
 	"fmt"
 	"io"

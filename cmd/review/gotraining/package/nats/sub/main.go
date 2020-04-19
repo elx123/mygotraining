@@ -42,40 +42,20 @@ func printMsg(m *nats.Msg, i int) {
 }
 
 func main() {
-	var urls = flag.String("s", nats.DefaultURL, "The nats server URLs (separated by comma)")
-	var userCreds = flag.String("creds", "", "User Credentials File")
-	var showTime = flag.Bool("t", false, "Display timestamps")
-	var showHelp = flag.Bool("h", false, "Show help message")
-
-	log.SetFlags(0)
-	flag.Usage = usage
-	flag.Parse()
-
-	if *showHelp {
-		showUsageAndExit(0)
-	}
-
-	args := flag.Args()
-	if len(args) != 1 {
-		showUsageAndExit(1)
-	}
 
 	// Connect Options.
 	opts := []nats.Option{nats.Name("NATS Sample Subscriber")}
 	opts = setupConnOptions(opts)
 
-	// Use UserCredentials
-	if *userCreds != "" {
-		opts = append(opts, nats.UserCredentials(*userCreds))
-	}
-
 	// Connect to NATS
-	nc, err := nats.Connect(*urls, opts...)
+	nc, err := nats.Connect("nats://192.168.99.100:30009", opts...)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	subj, i := args[0], 0
+	i := 0
+
+	subj := "test"
 
 	nc.Subscribe(subj, func(msg *nats.Msg) {
 		i += 1
@@ -88,9 +68,6 @@ func main() {
 	}
 
 	log.Printf("Listening on [%s]", subj)
-	if *showTime {
-		log.SetFlags(log.LstdFlags)
-	}
 
 	runtime.Goexit()
 }

@@ -1,0 +1,7 @@
+FROM golang
+MAINTAINER CJJ <cjj9931207@gmail.com>
+RUN mkdir /app
+ADD main.go /app
+WORKDIR /app
+RUN go build -o main .
+CMD ["/app/main"]

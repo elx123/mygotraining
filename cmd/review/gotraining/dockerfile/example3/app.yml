@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: k8s-test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: app-pod
+      app: k8s-test-app
+  template:
+    metadata:
+      name: app-pod
+      labels:
+        name: app-pod
+        app: k8s-test-app
+
+    spec:
+      containers:
+      - name: app-daemon-containers
+        image: cjj9931207/my-go-app
+        ports:
+        - containerPort: 8080

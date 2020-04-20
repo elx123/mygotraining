@@ -17,7 +17,6 @@ func test(w http.ResponseWriter, req *http.Request) {
 	} else {
 		w.Write([]byte("Fail"))
 	}
-	return
 }
 
 func main() {

@@ -20,8 +20,8 @@ func test(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-
-	db, err := sql.Open("mysql", "root:123456sdfwreS@tcp(mysqldb:3306)/test")
+	var err error
+	db, err = sql.Open("mysql", "root:123456sdfwreS@tcp(mysqldb:3306)/test")
 	if err != nil {
 		fmt.Println(err)
 		return
